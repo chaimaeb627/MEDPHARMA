@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un produit médical{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="d-flex align-items-center mb-5 justify-content-center">
+        <!-- Icône de retour à gauche (petite et circulaire) -->
+        <div class="me-3">
+            <a href="{{ path('admin_medicament_list') }}" class="btn btn-outline-primary btn-sm shadow-sm d-flex align-items-center rounded-circle p-2">
+                <i class="bi bi-arrow-left"></i> 
+            </a>
+        </div>
+        
+        <!-- Titre "Créer un produit médical" centré et en vert -->
+        <h1 class="display-5 fw-bold text-success text-center">Créer un produit médical</h1>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Formulaire stylisé -->
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+            <div class="card border-0 shadow-lg rounded-4">
+                <div class="card-body p-4">
+                    <!-- Section d'entête -->
+                    
+
+                    <!-- Formulaire -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label for="{{ form.nom.vars.id }}" class="form-label fw-semibold text-secondary">Nom du Médicament</label>
+                                {{ form_widget(form.nom, {'attr': {'class': 'form-control shadow-sm p-3 rounded-3'}}) }}
+                                <div class="text-danger">{{ form_errors(form.nom) }}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label for="{{ form.dosage.vars.id }}" class="form-label fw-semibold text-secondary">Dosage Médical</label>
+                                {{ form_widget(form.dosage, { 'attr': { 'class': 'form-control shadow-sm p-3 rounded-3', 'placeholder': 'Entrez le dosage' } }) }}
+                                <div class="text-danger">{{ form_errors(form.dosage) }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label for="{{ form.forme.vars.id }}" class="form-label fw-semibold text-secondary">Forme du Médicament</label>
+                                {{ form_widget(form.forme, { 'attr': { 'class': 'form-control shadow-sm p-3 rounded-3'} }) }}
+                                <div class="text-danger">{{ form_errors(form.forme) }}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label for="{{ form.prix.vars.id }}" class="form-label fw-semibold text-secondary">Prix du Médicament</label>
+                                {{ form_widget(form.prix, { "attr": { "class": "form-control shadow-sm p-3 rounded-3" } }) }}
+                                <div class="text-danger">{{ form_errors(form.prix) }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label for="{{ form.quantiteenstock.vars.id }}" class="form-label fw-semibold text-secondary">Quantité en Stock</label>
+                                {{ form_widget(form.quantiteenstock, { 'attr': {'class': 'form-control shadow-sm p-3 rounded-3'} }) }}
+                                <div class="text-danger">{{ form_errors(form.quantiteenstock) }}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label for="{{ form.datelimite.vars.id }}" class="form-label fw-semibold text-secondary">Date Limite du Médicament</label>
+                                {{ form_widget(form.datelimite, { 'attr': {'class': 'form-control shadow-sm p-3 rounded-3'} }) }}
+                                <div class="text-danger">{{ form_errors(form.datelimite) }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label for="{{ form.description.vars.id }}" class="form-label fw-semibold text-secondary">Description du produit Médical</label>
+                        {{ form_widget(form.description, { 'attr': {'class': 'form-control shadow-sm p-3 rounded-3'} }) }}
+                        <div class="text-danger">{{ form_errors(form.description) }}</div>
+                    </div>
+
+                    <!-- Bouton Créer -->
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-success px-5 py-3 rounded-3 shadow-lg transition-all ease-in-out duration-300 hover:bg-success hover:opacity-90">
+                            Enregistrer
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

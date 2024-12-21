@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer une Commande{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-center align-items-center mb-5">
+        <!-- Icône de retour centrée avec cadre vert -->
+        <div class="me-3">
+            <a href="{{ path('admin_commande_list') }}" class="btn btn-outline-success btn-sm shadow-sm d-flex align-items-center rounded-circle p-2">
+                <i class="bi bi-arrow-left text-success"></i> 
+            </a>
+        </div>
+        
+        <!-- Titre "Créer une Commande" centré et en vert -->
+        <h1 class="display-5 fw-bold text-success text-center">Créer une Commande</h1>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Formulaire stylisé -->
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+            <div class="card border-0 shadow-lg rounded-4">
+                <div class="card-body p-4">
+                    <!-- Section d'entête -->
+                    
+
+                    <!-- Date de Commande -->
+                    <div class="form-group mb-4">
+                        <label for="{{ form.datecommande.vars.id ?? 'datecommande' }}" class="form-label fw-semibold">Date de Commande</label>
+                        {{ form_widget(form.datecommande, {'attr': {'class': 'form-control shadow-sm rounded-3 p-3', 'placeholder': 'Sélectionnez une date'}}) }}
+                        <div class="text-danger">{{ form_errors(form.datecommande) }}</div>
+                    </div>
+
+                    <!-- Nom du Client -->
+                    <div class="form-group mb-4">
+                        <label for="{{ form.nomclient.vars.id }}" class="form-label fw-semibold">Nom du Client</label>
+                        {{ form_widget(form.nomclient, { 'attr': { 'class': 'form-control shadow-sm rounded-3 p-3', 'placeholder': 'Entrez le nom du client' } }) }}
+                        <div class="text-danger">{{ form_errors(form.nomclient) }}</div>
+                    </div>
+
+                    <!-- Numéro du Téléphone -->
+                    <div class="form-group mb-4">
+                        <label for="{{ form.telephoneclient.vars.id }}" class="form-label fw-semibold">Numéro du Téléphone</label>
+                        {{ form_widget(form.telephoneclient, { 'attr': { 'class': 'form-control shadow-sm rounded-3 p-3', 'placeholder': 'Entrez le numéro de téléphone' } }) }}
+                        <div class="text-danger">{{ form_errors(form.telephoneclient) }}</div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group mb-4">
+                        <label for="{{ form.emailclient.vars.id }}" class="form-label fw-semibold">Email</label>
+                        {{ form_widget(form.emailclient, { "attr": { "class": "form-control shadow-sm rounded-3 p-3", "placeholder": "Entrez l'email" } }) }}
+                        <div class="text-danger">{{ form_errors(form.emailclient) }}</div>
+                    </div>
+
+                    <!-- Médicaments Commandés -->
+                    <div class="form-group mb-4">
+                        <label for="{{ form.medicammentcommande.vars.id }}" class="form-label fw-semibold">Médicaments Commandés</label>
+                        {{ form_widget(form.medicammentcommande, { 'attr': {'class': 'form-control shadow-sm rounded-3 p-3'} }) }}
+                        <div class="text-danger">{{ form_errors(form.medicammentcommande) }}</div>
+                    </div>
+
+                    <!-- Bouton Créer -->
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-success px-5 py-3 rounded-3 shadow-lg transition-all ease-in-out duration-300 hover:bg-success hover:opacity-90">
+                            Enregistrer
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}
