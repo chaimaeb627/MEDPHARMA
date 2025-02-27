@@ -3,75 +3,101 @@
 {% block title %}Créer une Commande{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <div class="d-flex justify-content-center align-items-center mb-5">
-        <!-- Icône de retour centrée avec cadre vert -->
-        <div class="me-3">
-            <a href="{{ path('admin_commande_list') }}" class="btn btn-outline-success btn-sm shadow-sm d-flex align-items-center rounded-circle p-2">
-                <i class="bi bi-arrow-left text-success"></i> 
-            </a>
-        </div>
-        
-        <!-- Titre "Créer une Commande" centré et en vert -->
-        <h1 class="display-5 fw-bold text-success text-center">Créer une Commande</h1>
+<div class="container" style="margin-top: -23px;">
+    <!-- En-tête -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-nouvelle-commande" style="color: #28A745 !important;">
+            <i class="fas fa-plus-circle me-2"></i> Nouvelle Commande
+        </h2>
+        <a href="{{ path('admin_commande_list') }}" class="btn btn-light border rounded-circle shadow-sm p-2">
+            <i class="fas fa-times"></i>
+        </a>
     </div>
 
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <!-- Formulaire stylisé -->
+    <!-- Carte du formulaire -->
+    <div class="card border-0 shadow-lg rounded-4 p-4">
+        <div class="card-body">
             {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
-            <div class="card border-0 shadow-lg rounded-4">
-                <div class="card-body p-4">
-                    <!-- Section d'entête -->
-                    
-
-                    <!-- Date de Commande -->
-                    <div class="form-group mb-4">
-                        <label for="{{ form.datecommande.vars.id ?? 'datecommande' }}" class="form-label fw-semibold">Date de Commande</label>
-                        {{ form_widget(form.datecommande, {'attr': {'class': 'form-control shadow-sm rounded-3 p-3', 'placeholder': 'Sélectionnez une date'}}) }}
-                        <div class="text-danger">{{ form_errors(form.datecommande) }}</div>
+            <div class="row g-4">
+                <!-- Nom du client -->
+                <div class="col-md-6">
+                    <label for="{{ form.nomclient.vars.id }}" class="form-label fw-semibold text-secondary">
+                        <i class="fas fa-user me-2"></i> Nom du Client
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
+                        {{ form_widget(form.nomclient, {'attr': {'class': 'form-control shadow-sm rounded-end'}}) }}
                     </div>
-
-                    <!-- Nom du Client -->
-                    <div class="form-group mb-4">
-                        <label for="{{ form.nomclient.vars.id }}" class="form-label fw-semibold">Nom du Client</label>
-                        {{ form_widget(form.nomclient, { 'attr': { 'class': 'form-control shadow-sm rounded-3 p-3', 'placeholder': 'Entrez le nom du client' } }) }}
-                        <div class="text-danger">{{ form_errors(form.nomclient) }}</div>
-                    </div>
-
-                    <!-- Numéro du Téléphone -->
-                    <div class="form-group mb-4">
-                        <label for="{{ form.telephoneclient.vars.id }}" class="form-label fw-semibold">Numéro du Téléphone</label>
-                        {{ form_widget(form.telephoneclient, { 'attr': { 'class': 'form-control shadow-sm rounded-3 p-3', 'placeholder': 'Entrez le numéro de téléphone' } }) }}
-                        <div class="text-danger">{{ form_errors(form.telephoneclient) }}</div>
-                    </div>
-
-                    <!-- Email -->
-                    <div class="form-group mb-4">
-                        <label for="{{ form.emailclient.vars.id }}" class="form-label fw-semibold">Email</label>
-                        {{ form_widget(form.emailclient, { "attr": { "class": "form-control shadow-sm rounded-3 p-3", "placeholder": "Entrez l'email" } }) }}
-                        <div class="text-danger">{{ form_errors(form.emailclient) }}</div>
-                    </div>
-
-                    <!-- Médicaments Commandés -->
-                    <div class="form-group mb-4">
-                        <label for="{{ form.medicammentcommande.vars.id }}" class="form-label fw-semibold">Médicaments Commandés</label>
-                        {{ form_widget(form.medicammentcommande, { 'attr': {'class': 'form-control shadow-sm rounded-3 p-3'} }) }}
-                        <div class="text-danger">{{ form_errors(form.medicammentcommande) }}</div>
-                    </div>
-
-                    <!-- Bouton Créer -->
-                    <div class="text-center mt-4">
-                        <button type="submit" class="btn btn-success px-5 py-3 rounded-3 shadow-lg transition-all ease-in-out duration-300 hover:bg-success hover:opacity-90">
-                            Enregistrer
-                        </button>
-                    </div>
+                    <div class="text-danger">{{ form_errors(form.nomclient) }}</div>
                 </div>
+
+                <!-- Médicament commandé -->
+                <div class="col-md-6">
+                    <label for="{{ form.medicammentcommande.vars.id }}" class="form-label fw-semibold text-secondary">
+                        <i class="fas fa-pills me-2"></i> Médicament
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light"><i class="fas fa-capsules"></i></span>
+                        {{ form_widget(form.medicammentcommande, {'attr': {'class': 'form-select shadow-sm rounded-end'}}) }}
+                    </div>
+                    <div class="text-danger">{{ form_errors(form.medicammentcommande) }}</div>
+                </div>
+
+                <!-- Date de commande -->
+                <div class="col-md-6">
+                    <label for="{{ form.datecommande.vars.id }}" class="form-label fw-semibold text-secondary">
+                        <i class="fas fa-calendar-alt me-2"></i> Date de Commande
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light"><i class="fas fa-calendar"></i></span>
+                        {{ form_widget(form.datecommande, {'attr': {'class': 'form-control shadow-sm rounded-end'}}) }}
+                    </div>
+                    <div class="text-danger">{{ form_errors(form.datecommande) }}</div>
+                </div>
+
+                <!-- Téléphone -->
+                <div class="col-md-6">
+                    <label for="{{ form.telephoneclient.vars.id }}" class="form-label fw-semibold text-secondary">
+                        <i class="fas fa-phone-alt me-2"></i> Téléphone
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light"><i class="fas fa-phone"></i></span>
+                        {{ form_widget(form.telephoneclient, {'attr': {'class': 'form-control shadow-sm rounded-end'}}) }}
+                    </div>
+                    <div class="text-danger">{{ form_errors(form.telephoneclient) }}</div>
+                </div>
+
+                <!-- Email -->
+                <div class="col-md-6">
+                    <label for="{{ form.emailclient.vars.id }}" class="form-label fw-semibold text-secondary">
+                        <i class="fas fa-envelope me-2"></i> Email
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light"><i class="fas fa-envelope"></i></span>
+                        {{ form_widget(form.emailclient, {'attr': {'class': 'form-control shadow-sm rounded-end'}}) }}
+                    </div>
+                    <div class="text-danger">{{ form_errors(form.emailclient) }}</div>
+                </div>
+            </div>
+
+            <!-- Boutons d'action -->
+            <div class="d-flex justify-content-end mt-4 gap-3">
+                <a href="{{ path('admin_commande_list') }}" class="btn btn-outline-danger px-4 py-2 rounded-pill">
+                    <i class="fas fa-times me-2"></i> Annuler
+                </a>
+                <button type="submit" class="btn btn-confirm px-4 py-2 rounded-pill shadow"
+                        style="background-color: #28A745 !important; border-color: #28A745 !important; color: white !important;">
+                    <i class="fas fa-check me-2"></i> Confirmer
+                </button>
             </div>
 
             {{ form_end(form) }}
         </div>
     </div>
 </div>
+
+<!-- Ajout de FontAwesome pour les icônes -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 {% endblock %}

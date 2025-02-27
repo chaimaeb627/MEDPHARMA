@@ -19,140 +19,279 @@
         /* Sidebar */
         .sidebar {
             width: 260px;
-            background: #343a40; /* Gris foncé pour un look plus moderne */
+            background: #081A2C;
             color: #fff;
-            padding: 40px 25px;
+            padding: 20px 25px;
             position: fixed;
             height: 100%;
             top: 0;
             left: 0;
             z-index: 1000;
             box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+            transition: width 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
 
-        .sidebar h5 {
-            color: #28A745; /* Vert clair pour la marque */
-            font-size: 1.5rem;
+        .sidebar.collapsed {
+            width: 70px;
+        }
+
+        .sidebar .logo {
+            margin-left: 0px;
+            font-size: 22px;
             font-weight: bold;
-            margin-bottom: 40px;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            color: #28a745 !important;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: space-between;
+            margin-right: 2px; 
+        }
+        .sidebar .menu-btn {
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: #FFFFFF !important; /* Couleur du menu */
+    padding: 6px;
+    margin-left: 18px;
+}
+
+        .sidebar.collapsed .logo span {
+            display: none;
         }
 
         .sidebar a {
             display: flex;
             align-items: center;
             text-decoration: none;
-            color: #fff;
+            color: #d1d5db;
             font-size: 1rem;
             font-weight: bold;
             margin-bottom: 20px;
             padding: 10px 15px;
             border-radius: 8px;
             transition: background 0.3s ease, transform 0.2s ease;
+            gap: 10px;
         }
 
         .sidebar a:hover {
-            background-color: #495057; /* Gris clair pour l'hover */
+            
             transform: translateX(10px);
         }
 
-        .sidebar a i {
-            font-size: 1.5rem;
-            margin-right: 15px;
+        .sidebar.collapsed a span {
+            display: none;
+            font-weight: bold !important;
+            color: #28a745 !important;
         }
 
-        .sidebar a span {
-            font-weight: bold;
+        .sidebar.collapsed a i {
+            margin-right: 0;
+            color: #28a745 !important;
         }
 
         .sidebar .divider {
             margin: 30px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Gris clair pour la ligne */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         /* Top Bar */
         .top-bar {
-            position: fixed;
-            top: 0;
-            left: 260px;
-            right: 0;
-            background: #343a40; /* Gris foncé */
-            color: #F5F5F5;
-            padding: 18px 30px; /* Augmentation du padding pour élargir */
+    position: fixed;
+    top: 0;
+    left: 260px;
+    right: 0;
+    background: #081A2C;
+    color: #ffffff;
+    padding: 15px 30px; /* Réduire ou ajuster le padding si nécessaire */
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    transition: left 0.3s ease;
+    margin-bottom: 0 !important; /* S'assurer qu'il n'y a pas de marge en bas */
+    height: auto; /* S'assurer qu'il n'y a pas d'espace supplémentaire en bas */
+}
+
+        .top-bar .search-bar {
+    display: flex;
+    margin-left: 40px;
+    align-items: center;
+    background: #ffffff;
+    padding: 8px 15px;
+    border-radius: 20px;
+    width: 250px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.top-bar .search-bar:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.top-bar .search-bar input {
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 100%;
+    margin-left: 10px;
+    font-size: 1rem;
+    color: #081A2C;
+}
+
+.top-bar .search-bar i {
+    color: #28a745;
+    font-size: 1.2rem;
+    transition: transform 0.2s ease-in-out;
+}
+
+.top-bar .search-bar:hover i {
+    transform: scale(1.1);
+}
+
+
+        .top-bar.collapsed {
+            left: 70px;
+        }
+
+        .top-bar .left-section {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            z-index: 999;
+            gap: 20px;
         }
 
-        .top-bar .profile {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        .top-bar .menu-btn {
+            font-size: 1.5rem;
+            margin-right: 2px;
+            cursor: pointer;
+            color: #ffffff !important;
         }
+        
 
-        .top-bar .profile i {
-            font-size: 1.8rem;
-        }
-
-        .top-bar .profile span {
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
+        
+        
 
         /* Main Content */
         .content {
-            margin-top: 110px; /* Ajustement pour correspondre à la hauteur de la top-bar */
+            margin-top: 110px;
             margin-left: 260px;
             padding: 40px;
             background-color: #F4F6F8;
+            transition: margin-left 0.3s ease;
         }
 
-        /* Media Queries */
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
-                box-shadow: none;
-            }
-
-            .top-bar {
-                left: 0;
-            }
-
-            .content {
-                margin-left: 0;
-            }
+        .content.collapsed {
+            margin-left: 70px;
         }
+        /* Dropdown Profile */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-icon {
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    background: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    width: 200px;
+    top: 40px;
+}
+
+.dropdown-menu a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    color: #081A2C;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background 0.3s ease;
+}
+.dropdown-menu a i {
+    color: #28a745 !important; /* Vert */
+}
+
+
+.dropdown-menu a:hover {
+    background: #f1f1f1;
+}
+
+.divider {
+    height: 1px;
+    background: #ddd;
+    margin: 5px 0;
+}
+.top-bar .right-section {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Espace entre les éléments */
+    margin-left: auto; /* Pousse vers la droite */
+}
+
+
     </style>
 </head>
 
 <body>
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <h5>MEDPHARMA</h5>
-        <a href="{{ path('admin_medicament_list') }}">
-            <i class="bi bi-capsule"></i>
-            <span>Produits Médicaux</span>
-        </a>
-        <a href="{{ path('admin_commande_list') }}">
-            <i class="bi bi-cart-check"></i>
-            <span>Commandes</span>
-        </a>
-        <div class="divider"></div>
+        <div class="logo">
+            <i class="bi bi-grid-fill"></i>
+            <span>MEDPHARMA</span>
+            <i class="bi bi-list menu-btn" id="menu-btn"></i> 
+        </div>
+        <ul style="list-style: none; padding: 0; margin: 0;">
+            <li><a href="{{ path('admin_medicament_list') }}"><i class="bi bi-capsule" style="color: #28a745;"></i><span>Produits Médicaux</span></a></li>
+            <li><a href="{{ path('admin_commande_list') }}"><i class="bi bi-cart" style="color: #28a745;"></i><span>Commandes</span></a></li>
+            <li class="menu-item">
+       <a href="{{ path('produits_cosmetiques') }}">
+        <i class="bi bi-box-seam" style="color: #28a745;"></i><span>Cosmétique</span></a>
+        
+    </a>
+</li>
+
+        </ul>
+        
     </div>
 
     <!-- Top Bar -->
-    <div class="top-bar">
-        <span class="title"></span>
-        <div class="profile">
-            <i class="bi bi-person-circle"></i>
-            <span>Chaimae Benali</span>
+    <div class="top-bar" id="top-bar">
+        <div class="left-section">
+            
+            <div class="search-bar">
+                <i class="bi bi-search" style="color: #000000"></i>
+                <input type="text" placeholder="Rechercher...">
+            </div>
         </div>
+        
+    
+    <div class="right-section">
+    <div class="dropdown">
+        <i class="bi bi-person-circle profile-icon" id="profile-icon"></i>
+        <div class="dropdown-menu" id="profile-menu">
+            <a href="{{ path('user_profile') }}"><i class="bi bi-person"></i> Mon profile</a>
+
+            <a href="#"><i class="bi bi-chat-left-dots"></i> Chat</a>
+            <a href="#"><i class="bi bi-globe"></i> Support</a>
+            <div class="divider"></div>
+            <a href="#"><i class="bi bi-lock"></i> Lock screen</a>
+            <a href="{{ path('login') }}"><i class="bi bi-box-arrow-right"></i>Se déconnecter</a>
+        </div>
+    </div>
+</div>
+
+</div>
+
     </div>
 
     <!-- Main Content -->
@@ -162,6 +301,33 @@
         <p>Découvrez l'ensemble des fonctionnalités et naviguez dans les menus pour gérer les différentes sections.</p>
         {% endblock %}
     </div>
+
+    <script>
+        // JavaScript pour gérer la réduction de la sidebar
+        const menuBtn = document.getElementById('menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        const topBar = document.getElementById('top-bar');
+        const content = document.getElementById('content');
+        const profileIcon = document.getElementById('profile-icon');
+    const profileMenu = document.getElementById('profile-menu');
+
+    profileIcon.addEventListener('click', () => {
+        profileMenu.style.display = profileMenu.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Fermer le menu lorsqu'on clique en dehors
+    document.addEventListener('click', (event) => {
+        if (!profileIcon.contains(event.target) && !profileMenu.contains(event.target)) {
+            profileMenu.style.display = 'none';
+        }
+    });
+
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            topBar.classList.toggle('collapsed');
+            content.classList.toggle('collapsed');
+        });
+    </script>
 </body>
 
 </html>

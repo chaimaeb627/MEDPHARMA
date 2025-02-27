@@ -4,6 +4,7 @@ namespace App\Controller;
 use Knp\Component\Pager\PaginatorInterface; 
 use App\Entity\Commande;
 use App\Form\CommandeType;
+use App\Form\RechercheCommandeType;
 use App\Repository\CommandeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,9 +13,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CommandeController extends AbstractController
+
 {
-    private $commandeRepository;
-    private $entityManager;
+    private $commandeRepository;//Injecté pour accéder aux données des commandes depuis la base via Doctrine.
+    private $entityManager;//Gestionnaire d'entités Doctrine utilisé pour les opérations de persistance, mise à jour et suppression dans la base de donnée
 
     public function __construct(CommandeRepository $commandeRepository, EntityManagerInterface $entityManager)
     {
@@ -24,11 +26,28 @@ class CommandeController extends AbstractController
 
     
 
-    #[Route('/commandes', name: 'admin_commande_list', methods: ['GET'])]
+    #[Route('/commandes', name: 'admin_commande_list', methods: ['GET', 'POST'])]
 public function index(Request $request, CommandeRepository $commandeRepository, PaginatorInterface $paginator): Response
 {
+    // Créer le formulaire de recherche
+    $form = $this->createForm(RechercheCommandeType::class);
+    $form->handleRequest($request);
+
+    // Initialiser la requête de recherche des commandes
+    $queryBuilder = $commandeRepository->createQueryBuilder('c');
+
+    // Appliquer les filtres
+    if ($form->isSubmitted() && $form->isValid()) {
+        $data = $form->getData();
+        if ($data['datecommande']) {
+            $queryBuilder
+                ->andWhere('c.datecommande = :datecommande')
+                ->setParameter('datecommande', $data['datecommande']);
+        }
+    }
+
     // Récupérer les données à paginer
-    $query = $commandeRepository->createQueryBuilder('c')->getQuery();
+    $query = $queryBuilder->getQuery();
 
     // Paginer les données
     $commandes = $paginator->paginate(
@@ -39,8 +58,10 @@ public function index(Request $request, CommandeRepository $commandeRepository, 
 
     return $this->render('commande/index.html.twig', [
         'commandes' => $commandes,
+        'form' => $form->createView(), // Ajouter le formulaire de recherche à la vue
     ]);
 }
+
 
 
 
@@ -67,30 +88,45 @@ public function index(Request $request, CommandeRepository $commandeRepository, 
     }
 
     #[Route('/commandes/{id}/edit', name: 'commande_edit')]
-    public function edit(Request $request, Commande $commande): Response
+    public function edit(Request $request, Commande $commandes): Response
     {
-        $form = $this->createForm(CommandeType::class, $commande);
+        $form = $this->createForm(CommandeType::class, $commandes);//Génération d'un formulaire pour modifier l'entité existante.
     
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->flush();
+            $this->entityManager->flush();//Validation et mise à jour de l'entité dans la base via flush()
     
-            return $this->redirectToRoute('admin_commande_list');
+            return $this->redirectToRoute('admin_commande_list');//Redirection vers la liste des commandes après enregistrement.
         }
     
         return $this->render('commande/edit.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form->createView(),// Transforme l'objet form en vue utilisable dans Twig
         ]);
     }
 
-    #[Route('/commandes/{id}/delete', name: 'commande_delete')]
-    public function delete(Request $request, Commande $commande): Response
+    #[Route('/commande/{id}/delete', name: 'commande_delete', methods: ['POST'])]
+    public function delete(Request $request, Commande $commande, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $commande->getId(), $request->request->get('_token'))) {
-            $this->entityManager->remove($commande);
-            $this->entityManager->flush();
+            $entityManager->remove($commande);
+            $entityManager->flush();
         }
     
         return $this->redirectToRoute('admin_commande_list');
     }
+    #[Route('/commande/{id}/view', name: 'commande_view')]
+    public function viewCommande(int $id, CommandeRepository $commandeRepository): Response
+    {
+        $commande = $commandeRepository->find($id);
+    
+        if (!$commande) {
+            throw $this->createNotFoundException('La commande demandée n\'existe pas.');
+        }
+    
+        return $this->render('commande/view.html.twig', [
+            'commande' => $commande,
+        ]);
+    }
+    
+    
 }

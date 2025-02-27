@@ -3,3 +3,18 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+produits_cosmetiques:
+  path: /produits/cosmetiques
+  controller: App\Controller\ProduitController::cosmetiques
+
+produit_ajouter:
+    path: /produit/ajouter
+    controller: App\Controller\ProduitController::ajouterProduit
+    methods: [GET, POST]
+
+
+   
+
+
+

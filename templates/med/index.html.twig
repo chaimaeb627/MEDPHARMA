@@ -1,19 +1,182 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div class="container mt-4">
-    <h2 class="mb-4 text-center" style="color: #28A745;font-weight:bold;">Affiche des Produits Médicaux</h2>
-
-    <div class="d-flex justify-content-between mb-3">
-        <a href="{{ path('medicament_create') }}" class="btn btn-primary" style="border-radius: 30px; padding: 10px 20px;background-color:#28A745;">
-            + Créer un produit médical
-        </a>
+<div class="row mb-4" style="margin-top: -47px;">
+    <!-- Statistique 1 -->
+    <div class="col-md-3">
+        <div class="card text-dark mb-3" style="max-width: 18rem; background-color: #bcbcbc; color: #343A40; border: 1px solid #343A40;">
+            <div class="card-header" style="background-color: #bcbcbc; font-weight:bold; color: #081A2C;">Total Produits</div>
+            <div class="card-body">
+                <h5 class="card-title" style="font-weight:bold; color: #28A745;">{{ totalProduits }}</h5>
+                <p class="card-text">Nombre total de produits enregistrés.</p>
+            </div>
+        </div>
     </div>
 
-    <!-- Tableau simple -->
+    <!-- Statistique 2 -->
+    <div class="col-md-3">
+        <div class="card text-dark mb-3" style="max-width: 18rem; background-color: #bcbcbc; color: #343A40; border: 1px solid #343A40;">
+            <div class="card-header" style="background-color: #bcbcbc; font-weight:bold; color: #081A2C;">Produits en Stock</div>
+            <div class="card-body">
+                <h5 class="card-title" style="font-weight:bold; color: #28A745;">{{ totalStock }}</h5>
+                <p class="card-text">Produits disponibles actuellement.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistique 3 -->
+    <div class="col-md-3">
+        <div class="card text-dark mb-3" style="max-width: 18rem; background-color: #bcbcbc; color: #343A40; border: 1px solid #343A40;">
+            <div class="card-header" style="background-color: #bcbcbc; font-weight:bold; color: #081A2C;">Produits en Rupture</div>
+            <div class="card-body">
+                <h5 class="card-title" style="font-weight:bold; color: #28A745;">{{ produitsRupture }}</h5>
+                <p class="card-text">Produits avec un stock insuffisant.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistique 4 -->
+    <div class="col-md-3">
+        <div class="card text-dark mb-3" style="max-width: 18rem; background-color: #bcbcbc; color: #343A40; border: 1px solid #343A40;">
+            <div class="card-header" style="background-color: #bcbcbc; font-weight:bold; color: #081A2C;">La Date Limite</div>
+            <div class="card-body">
+                <h5 class="card-title" style="font-weight:bold; color: #28A745;">{{ produitsExpireBientot }}</h5>
+                <p class="card-text">Produits à vérifier bientôt avant sa date limite</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Conteneur du graphique des statistiques des produits -->
+        <div class="col-md-6 d-flex align-items-stretch">
+            <div class="card w-100" style="padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                
+                <div class="card-body">
+                    <canvas id="medicationStatsChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conteneur du graphique des statistiques de vente (à droite) -->
+        <div class="col-md-6 d-flex align-items-stretch">
+            <div class="card w-100" style="padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <div class="card-header" style="font-weight: bold; color: #081A2C; background-color: #f8f9fa;">Statistiques des Ventes annuels</div>
+                <div class="card-body">
+                    <canvas id="salesChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Intégration de Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('medicationStatsChart').getContext('2d');
+    const medicationStatsChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet'],
+            datasets: [
+                {
+                    label: 'Produits Médicaux Vendus',
+                    data: [50, 120, 90, 150, 200, 180, 220],
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Tendance (Courbe)',
+                    data: [40, 100, 80, 140, 180, 170, 210],
+                    type: 'line',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 2,
+                    fill: false,
+                    tension: 0.4,
+                    borderDash: [5, 5]
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 50
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                }
+            }
+        }
+    });
+
+    const salesCtx = document.getElementById('salesChart').getContext('2d');
+    const salesChart = new Chart(salesCtx, {
+        type: 'line',
+        data: {
+            labels: ['2018', '2019', '2020', '2021', '2022', '2023', '2024'],
+            datasets: [
+                {
+                    label: 'Ventes Totales',
+                    data: [18, 27, 36, 45, 33, 42, 50],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    fill: false,
+                    tension: 0.4
+                },
+                {
+                    label: 'Croissance',
+                    data: [12, 22, 32, 40, 30, 39, 47],
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2,
+                    fill: false,
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                }
+            }
+        }
+    });
+</script>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between mb-3">
+    <form method="post" class="d-flex align-items-center">
+        {{ form_start(form) }}
+        <div class="form-group d-flex mb-0">
+            {{ form_widget(form.nom, {'attr': {'class': 'form-control me-2', 'placeholder': 'Rechercher un produit...'}}) }}
+            
+            <button type="submit" class="btn btn-primary" style="border-radius: 20px; padding: 8px 20px; background-color: #28A745; border: none;">
+                <i class="bi bi-search" style="color: #000000"></i>
+            </button>
+        </div>
+        {{ form_end(form) }}
+    </form>
+    <a href="{{ path('medicament_create') }}" class="btn btn-success" style="border-radius: 30px; padding: 10px 20px; background-color: #28A745;">
+        + Créer un produit médical
+    </a>
+</div>
+
+    
     <table class="table">
         <thead>
             <tr>
+                <th></th>
                 <th>ID</th>
                 <th>Nom</th>
                 <th>Dosage</th>
@@ -22,12 +185,15 @@
                 <th>Quantité en Stock</th>
                 <th>Date Limite</th>
                 <th>Description</th>
-                <th>Actions</th>
+                <th class="text-center">
+                    <span>Actions</span>
+                </th>
             </tr>
         </thead>
         <tbody>
             {% for medicament in medicaments %}
                 <tr{% if loop.first %} class="first-row"{% endif %}>
+                    <td><input type="checkbox"></td>
                     <td>{{ medicament.id }}</td>
                     <td>{{ medicament.nom }}</td>
                     <td>{{ medicament.dosage }}</td>
@@ -37,17 +203,21 @@
                     <td>{{ medicament.datelimite|date('d/m/Y') }}</td>
                     <td>{{ medicament.description }}</td>
                     <td class="text-center">
-    <div class="d-flex justify-content-center align-items-center gap-2">
-        <a href="{{ path('medicament_edit', {'id': medicament.id}) }}" class="btn btn-success btn-sm">
-            Edit
-        </a>
-        <form method="post" action="{{ path('medicament_delete', {'id': medicament.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce médicament ?');">
-            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ medicament.id) }}">
-            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-        </form>
-    </div>
-</td>
-
+                        <div class="d-flex gap-2">
+                            <a href="{{ path('medicament_view', {'id': medicament.id}) }}" class="btn btn-info btn-sm rounded-circle">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{{ path('medicament_edit', {'id': medicament.id}) }}" class="btn btn-success btn-sm rounded-circle">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <form method="post" action="{{ path('medicament_delete', {'id': medicament.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce médicament ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ medicament.id) }}">
+                                <button type="submit" class="btn btn-danger btn-sm rounded-circle">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
                 </tr>
             {% else %}
                 <tr>
@@ -57,101 +227,8 @@
         </tbody>
     </table>
 
-    <!-- Navigation de la pagination -->
     <div class="d-flex justify-content-center">
         {{ knp_pagination_render(medicaments) }}
     </div>
 </div>
-{% endblock %}
-
-{% block stylesheets %}
-    <style>
-        /* Style du tableau */
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            border-spacing: 0;
-            background-color: #fff;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .table thead th {
-            background-color: #343a40;
-            color: #fff;
-            text-align: left;
-            font-size: 16px;
-            font-weight: bold;
-            padding: 12px;
-        }
-
-        .table tbody td {
-            padding: 10px;
-            text-align: left;
-            font-size: 14px;
-            color: #333;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .table tbody tr:hover {
-            background-color: #f8f9fa;
-        }
-
-        .table tbody .first-row {
-            background-color: #e0e0e0;
-        }
-
-        /* Style des boutons */
-        .btn-success {
-            background-color: #28a745;
-            color: white;
-            border-radius: 5px;
-            border: none;
-        }
-
-        .btn-success:hover {
-            background-color: #218838;
-        }
-
-        .btn-danger {
-            background-color: #dc3545;
-            color: white;
-            border-radius: 5px;
-            border: none;
-        }
-
-        .btn-danger:hover {
-            background-color: #c82333;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        /* Pagination */
-        .pagination {
-            display: inline-flex;
-            list-style: none;
-            padding: 0;
-            margin: 20px 0;
-        }
-
-        .pagination li a, .pagination li span {
-            padding: 8px 12px;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: bold;
-            color: #343a40;
-            background-color: #f8f9fa;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin: 0 5px;
-        }
-
-        .pagination li a:hover, .pagination li span.current {
-            background-color: #343a40;
-            color: white;
-        }
-    </style>
 {% endblock %}

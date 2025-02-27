@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cosmétiques{% endblock %}
+
+{% block body %}
+    <div class="container" style="margin-top: -55px;">
+        <div class="d-flex justify-content-between align-items-center my-4">
+            <h4 class="fw-bold" style="color: #28A745;"><i class="bi bi-bag-heart"></i>
+ Produits Cosmétiques</h4>
+            <a href="{{ path('produit_ajouter') }}" class="btn btn-success" style="border-radius: 30px; padding: 10px 20px; background-color: #28A745;">
+        + ajouter un produit
+    </a>
+        </div>
+
+        <div class="row justify-content-center">
+            {% for produit in produits %}
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm border-0 rounded-4 overflow-hidden transition-transform hover-scale">
+                        <div class="position-relative">
+                            {% if produit.nom == 'Crème Hydratante' %}
+                                <img src="{{ asset('upload/mous.png') }}" alt="Crème Hydratante" class="card-img-top">
+                            {% elseif produit.nom == 'Shampooing Bio' %}
+                                <img src="{{ asset('upload/shamp.png') }}" alt="Shampooing Bio" class="card-img-top">
+                            {% elseif produit.nom == 'Rouge à Lèvres' %}
+                                <img src="{{ asset('upload/mayb.png') }}" alt="Rouge à Lèvres" class="card-img-top">
+                            {% elseif produit.nom == 'BEAUTY OF JOSEON - HANBANG SERUM DISCOVERY KIT 10ML' %}
+                                <img src="{{ asset('upload/serum.png') }}" alt="BEAUTY OF JOSEON - HANBANG SERUM DISCOVERY KIT 10ML" class="card-img-top">
+                            {% elseif produit.nom == 'PERFECTIL - COMPLEMENT 30 JOURS' %}
+                                <img src="{{ asset('upload/perfe.png') }}" alt="PERFECTIL - COMPLEMENT 30 JOURS" class="card-img-top">
+                            {% elseif produit.nom == 'CENTELLA - POREMIZING FRESH AMPOULE 100 ML' %}
+                                <img src="{{ asset('upload/bea.png') }}" alt="CENTELLA - POREMIZING FRESH AMPOULE 100 ML" class="card-img-top">
+                            
+                            {% else %}
+                                <img src="{{ asset('images/default.png') }}" alt="Image par défaut" class="card-img-top">
+                            {% endif %}
+                            <div class="position-absolute top-0 end-0 m-2 badge bg-danger">
+                                {% if produit.prixPromo %} Promo {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="card-body text-center">
+                            <h5 class="card-title fw-bold">{{ produit.nom }}</h5>
+                            <p class="card-text text-muted small">{{ produit.description }}</p>
+
+                            {% if produit.prixPromo %}
+                                <p class="text-danger fw-bold">
+                                    <s class="text-muted">{{ produit.prix }} DH</s> {{ produit.prixPromo }} DH
+                                </p>
+                            {% else %}
+                                <p class="fw-bold">{{ produit.prix }} DH</p>
+                            {% endif %}
+
+                            <a href="{{ path('app_achat') }}" 
+   class="btn btn-sm rounded-pill fw-bold acheter-btn" 
+   style="background-color: #28A745; color: white; padding: 6px 32px; font-size: 16px; font-weight: bold"
+   data-nom="{{ produit.nom }}" 
+   data-prix="{{ produit.prixPromo ?: produit.prix }}"><i class="bi bi-cart-check"></i> 
+   Acheter
+</a>
+
+
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p class="text-center text-muted">Aucun produit disponible.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <style>
+        .card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+
+        .card-img-top {
+            height: 250px;
+            object-fit: cover;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .rounded-4 {
+            border-radius: 20px;
+        }
+
+        .btn {
+            font-weight: bold;
+            font-size: 16px;
+        }
+    </style>
+{% endblock %}

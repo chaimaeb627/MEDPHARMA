@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Finaliser l'achat{% endblock %}
+
+{% block body %}
+<style>
+    /* Effet Glassmorphism amélioré */
+    .glass-modal {
+        background: rgba(255, 255, 255, 0.3); /* Plus opaque pour la lisibilité */
+        backdrop-filter: blur(15px);
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        padding: 40px;
+        color: #333; /* Texte foncé pour une meilleure visibilité */
+        width: 75%; /* Formulaire élargi */
+    }
+    .glass-input {
+        background: rgba(255, 255, 255, 0.7); /* Champ plus clair */
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 8px;
+        padding: 14px;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        color: #222; /* Texte bien visible */
+    }
+    .glass-input::placeholder {
+        color: rgba(0, 0, 0, 0.5);
+    }
+    .btn-glass {
+        border-radius: 50px;
+        padding: 12px 25px;
+        font-size: 16px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    .btn-glass:hover {
+        transform: scale(1.05);
+        opacity: 0.9;
+    }
+
+    /* Labels bien visibles */
+    label {
+        font-weight: bold;
+        color: #222;
+    }
+</style>
+
+<!-- Centrage parfait avec léger décalage vers le haut -->
+<div class="d-flex justify-content-center align-items-center vh-100" style="margin-top: -95px;">
+    <div class="glass-modal">
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <h3 class="fw-bold" style="color: #28A745; font-weight: bold;"><i class="bi bi-cart-check"></i> Finaliser votre Achat</h3>
+        </div>
+
+        <!-- Contenu -->
+        <div class="modal-body">
+            {{ form_start(form) }}
+
+            <div class="row">
+                <!-- Nom -->
+                <div class="col-md-6 mb-3">
+                    {{ form_label(form.nom, 'Nom Complet') }}
+                    {{ form_widget(form.nom, {'attr': {'class': 'form-control glass-input', 'placeholder': 'Enter votre Nom'}}) }}
+                </div>
+
+                <!-- Email -->
+                <div class="col-md-6 mb-3">
+                    {{ form_label(form.email, ' Email') }}
+                    {{ form_widget(form.email, {'attr': {'class': 'form-control glass-input', 'placeholder': 'Entrer votre Email'}}) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Téléphone -->
+                <div class="col-md-6 mb-3">
+                    {{ form_label(form.telephoneclient, 'Numéro de Télèphone') }}
+                    {{ form_widget(form.telephoneclient, {'attr': {'class': 'form-control glass-input', 'placeholder': 'Entrer Votre Numéro'}}) }}
+                </div>
+            </div>
+
+            <!-- Boutons -->
+            <div class="text-center mt-4">
+                <a href="{{ path('produits_cosmetiques') }}" class="btn btn-danger btn-glass">
+                    ✖ Annuler
+                </a>
+                {{ form_widget(form.submit, {'attr': {'class': 'btn btn-success btn-glass'}}) }}
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

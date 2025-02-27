@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="card p-4 text-center shadow-lg" style="width: 400px; border-radius: 15px;">
+        <div class="profile-pic">
+            <img src="{{ asset('path/to/profile-image.png') }}" class="rounded-circle" width="100" height="100">
+        </div>
+        <h4 class="mt-3">Tosha Minner</h4>
+        <p class="text-muted">Founder</p>
+        <div>
+            <button class="btn btn-success">Follow</button>
+            <button class="btn btn-danger">Message</button>
+        </div>
+        <hr>
+        <h5 class="text-start">ABOUT ME :</h5>
+        <p class="text-muted text-start">
+            Hi I'm Tosha Minner, has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type.
+        </p>
+        <hr>
+        <div class="text-start">
+            <p><strong>Full Name :</strong> Tosha K. Minner</p>
+            <p><strong>Mobile :</strong> (123) 123 1234</p>
+            <p><strong>Email :</strong> user@email.domain</p>
+            <p><strong>Location :</strong> USA</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

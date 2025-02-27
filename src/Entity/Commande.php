@@ -26,18 +26,27 @@ class Commande
     private ?string $medicammentcommande = null;
 
     
+    #[Assert\NotBlank(message: "Le numéro de téléphone est obligatoire.")]
+    #[Assert\Regex(
+        pattern: "/^\d{10}$/",
+        message: "Le numéro de téléphone doit comporter exactement 10 chiffres."
+    )]
 
     #[ORM\Column]
-    private ?int $telephoneclient = null;
-
+    private ?string $telephoneclient = null;
+    #[Assert\NotBlank(message: "L'email est obligatoire.")]
+    #[Assert\Email(
+        message: "L'email '{{ value }}' n'est pas un email valide. Exemple : username@gmail.com."
+    )]
     #[ORM\Column(length: 255)]
     private ?string $emailclient = null;
+    
+
 
     /**
      * @var Collection<int, Medicament>
      */
-    #[ORM\ManyToMany(targetEntity: Medicament::class, mappedBy: 'commande')]
-    private Collection $med;
+    
 
     public function __construct()
     {
@@ -94,12 +103,12 @@ class Commande
 
     
 
-    public function getTelephoneclient(): ?int
+    public function getTelephoneclient(): ?string
     {
         return $this->telephoneclient;
     }
 
-    public function setTelephoneclient(int $telephoneclient): static
+    public function setTelephoneclient(string $telephoneclient): static
     {
         $this->telephoneclient = $telephoneclient;
 
@@ -119,29 +128,6 @@ class Commande
     }
 
     /**
-     * @return Collection<int, Medicament>
+     * 
      */
-    public function getMed(): Collection
-    {
-        return $this->med;
-    }
-
-    public function addMed(Medicament $med): static
-    {
-        if (!$this->med->contains($med)) {
-            $this->med->add($med);
-            $med->addCommande($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMed(Medicament $med): static
-    {
-        if ($this->med->removeElement($med)) {
-            $med->removeCommande($this);
-        }
-
-        return $this;
-    }
 }

@@ -16,45 +16,41 @@ class MedicamentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            // Nom du médicament
             ->add('nom', TextType::class, [
                 'label' => 'Nom du médicament',
                 'attr' => ['class' => 'form-control']
             ])
-
-            // Dosage du médicament
             ->add('dosage', TextType::class, [
                 'label' => 'Dosage',
                 'attr' => ['class' => 'form-control']
             ])
-
-            // Forme du médicament (comprimé, liquide, etc.)
             ->add('forme', TextType::class, [
                 'label' => 'Forme',
                 'attr' => ['class' => 'form-control']
             ])
-
-            // Prix du médicament
             ->add('prix', NumberType::class, [
                 'label' => 'Prix',
-                'scale' => 2, // deux décimales
-                'attr' => ['class' => 'form-control']
+                'scale' => 2,
+                'attr' => [
+                    'class' => 'form-control',
+                    'min' => 1, // Empêche d'entrer une valeur négative ou zéro
+                    'step' => '0.01' // Permet d'avoir des valeurs décimales
+                ]
             ])
-
-            // Quantité en stock
-            ->add('quantiteenstock', TextType::class, [
+            ->add('quantiteenstock', NumberType::class, [
                 'label' => 'Quantité en stock',
-                'attr' => ['class' => 'form-control']
+                'attr' => [
+                    'class' => 'form-control',
+                    'min' => 0, // ✅ Empêche les valeurs négatives
+                    'step' => '1' // ✅ Assure que c'est un nombre entier
+                ]
             ])
-
-            // Date limite de validité
+            
             ->add('datelimite', DateType::class, [
                 'label' => 'Date limite de validité',
                 'widget' => 'single_text',
                 'attr' => ['class' => 'form-control']
             ])
-
-            // Description du médicament
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
                 'attr' => ['class' => 'form-control']
